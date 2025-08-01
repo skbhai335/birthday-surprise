@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Someone Special</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.5s ease;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+        }
+        
+        .overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            border-radius: 15px;
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .password-container {
+            margin-top: 2rem;
+        }
+        
+        input {
+            padding: 0.8rem 1.2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 1rem;
+            background-color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+        }
+        
+        button {
+            padding: 0.8rem 1.8rem;
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(255, 117, 140, 0.4);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 117, 140, 0.6);
+        }
+        
+        .quote-display {
+            display: none;
+            margin-top: 2rem;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .quote {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            line-height: 1.4;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .birthday {
+            font-style: italic;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            color: #ffea00;
+        }
+        
+        .heart {
+            position: absolute;
+            pointer-events: none;
+            animation: float 5s ease-in-out infinite;
+            opacity: 0.7;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .progress-dots {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .dot.active {
+            background-color: white;
+        }
+        
+        #error {
+            color: #ffea00;
+            margin-top: 0.5rem;
+            height: 20px;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .quote {
+                font-size: 1.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    
+    <!-- Floating hearts -->
+    <div id="hearts-container"></div>
+    
+    <div class="container">
+        <div id="password-screen">
+            <h1>For My Special Someone</h1>
+            <p>Happy Birthday My Jaan, please enter our secret code to continue...</p>
+            
+            <div class="password-container">
+                <input type="password" id="password" placeholder="Enter the secret code..." autocomplete="off">
+                <div id="error"></div>
+                <button id="submit">Continue</button>
+            </div>
+        </div>
+        
+        <div id="quote-screen" class="quote-display">
+            <h1>Happy Birthday Rashi ❤</h1>
+            <p>Here are some special thoughts for your special day...</p>
+            
+            <div id="quotes-container">
+                <!-- Quotes will appear here one by one -->
+            </div>
+            
+            <div class="progress-dots" id="progress-dots">
+                <!-- Dots will be added by JS -->
+            </div>
+            
+            <div class="navigation">
+                <button id="prev">Previous</button>
+                <button id="next">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create floating hearts
+            function createHearts() {
+                const container = document.getElementById('hearts-container');
+                const colors = ['#ff9aa2', '#ffb7b2', '#ffdac1', '#e2f0cb', '#b5ead7', '#c7ceea'];
+                
+                for (let i = 0; i < 15; i++) {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = '❤';
+                    heart.classList.add('heart');
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.top = Math.random() * 100 + 'vh';
+                    heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                    heart.style.animationDuration = (Math.random() * 8 + 3) + 's';
+                    heart.style.animationDelay = Math.random() * 5 + 's';
+                    heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+                    container.appendChild(heart);
+                }
+            }
+            
+            createHearts();
+            
+            // Password verification
+            const passwordInput = document.getElementById('password');
+            const submitBtn = document.getElementById('submit');
+            const errorDiv = document.getElementById('error');
+            const passwordScreen = document.getElementById('password-screen');
+            const quoteScreen = document.getElementById('quote-screen');
+            
+            submitBtn.addEventListener('click', checkPassword);
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkPassword();
+                }
+            });
+            
+            function checkPassword() {
+                if (passwordInput.value.trim() === 'Rashi') {
+                    passwordScreen.style.display = 'none';
+                    quoteScreen.style.display = 'flex';
+                    showQuote(0);
+                    errorDiv.textContent = '';
+                } else {
+                    errorDiv.textContent = 'Oops! Try again sweetheart ❤';
+                    passwordInput.value = '';
+                }
+            }
+            
+            // Quotes functionality
+            const quotes = [
+                {
+                    text: "On your birthday, I wish for all the stars to align for you, just like our hearts did when we found each other.",
+                    bg: "Starry night sky with twinkling stars forming a heart shape, warm cozy atmosphere"
+                },
+                {
+                    text: "Every moment with you is a gift, but today is extra special because it's your day, Rashi!",
+                    bg: "Morning sunlight streaming through curtains, glowing golden light, romantic and peaceful"
+                },
+                {
+                    text: "Your smile brightens my world more than all the candles on your birthday cake ever could.",
+                    bg: "Close-up of a birthday cake with candles glowing, soft bokeh lights in background"
+                },
+                {
+                    text: "I never believed in soulmates until I met you. Now every day is worth celebrating, especially your birthday!",
+                    bg: "Silhouette of a couple holding hands against sunset, warm orange and pink hues"
+                },
+                {
+                    text: "You're not just a year older today, you're a year more beautiful, amazing, and loved than ever before.",
+                    bg: "Rose petals scattered on a bed, soft pink and white colors, dreamy atmosphere"
+                },
+                {
+                    text: "The best love stories start with 'once upon a time' but ours gets better every year - happy birthday sweetheart!",
+                    bg: "Open book with glowing pages, romantic calligraphy, fairy tale aesthetic"
+                },
+                {
+                    text: "If I could give you one gift, it would be to see yourself through my eyes - then you'd know how special you truly are.",
+                    bg: "Vintage mirror with floral frame, soft focus, dreamy feminine aesthetic"
+                },
+                {
+                    text: "Your birthday reminds me how lucky I am that you were born and how blessed I am that you chose me.",
+                    bg: "Fairy lights hanging in a cozy room, warm and intimate atmosphere"
+                },
+                {
+                    text: "I love you more than yesterday, but less than tomorrow - this is my birthday promise to you.",
+                    bg: "Calendar page with today's date, surrounded by dried flowers and romantic notes"
+                },
+                {
+                    text: "Happy birthday to the woman who makes every day feel like a celebration of love. Here's to many more years together!",
+                    bg: "Couple celebrating with champagne glasses at sunset, romantic golden hour lighting"
+                }
+            ];
+            
+            let currentQuoteIndex = 0;
+            const quotesContainer = document.getElementById('quotes-container');
+            const progressDots = document.getElementById('progress-dots');
+            const prevBtn = document.getElementById('prev');
+            const nextBtn = document.getElementById('next');
+            
+            // Create progress dots
+            quotes.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                if (index === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => showQuote(index));
+                progressDots.appendChild(dot);
+            });
+            
+            function showQuote(index) {
+                currentQuoteIndex = index;
+                
+                // Update body background
+                document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://placehold.co/1920x1080?text=${encodeURIComponent(quotes[index].bg)}')`;
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.backgroundPosition = 'center';
+                
+                // Update quotes display
+                quotesContainer.innerHTML = `
+                    <div class="quote">"${quotes[index].text}"</div>
+                    <div class="birthday">- Happy Birthday Rashi!</div>
+                `;
+                
+                // Update active dot
+                document.querySelectorAll('.dot').forEach((dot, i) => {
+                    if (i === index) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+                
+                // Update button states
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === quotes.length - 1;
+            }
+            
+            prevBtn.addEventListener('click', () => {
+                if (currentQuoteIndex > 0) {
+                    showQuote(currentQuoteIndex - 1);
+                }
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                if (currentQuoteIndex < quotes.length - 1) {
+                    showQuote(currentQuoteIndex + 1);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+🎨 *Generating images based on descriptions...*
+
+✅ *Images generated successfully! Here's your updated content:*
+
+surprise.html
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Someone Special</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.5s ease;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+        }
+        
+        .overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            border-radius: 15px;
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .password-container {
+            margin-top: 2rem;
+        }
+        
+        input {
+            padding: 0.8rem 1.2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 1rem;
+            background-color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+        }
+        
+        button {
+            padding: 0.8rem 1.8rem;
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(255, 117, 140, 0.4);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 117, 140, 0.6);
+        }
+        
+        .quote-display {
+            display: none;
+            margin-top: 2rem;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .quote {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            line-height: 1.4;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .birthday {
+            font-style: italic;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            color: #ffea00;
+        }
+        
+        .heart {
+            position: absolute;
+            pointer-events: none;
+            animation: float 5s ease-in-out infinite;
+            opacity: 0.7;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .progress-dots {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .dot.active {
+            background-color: white;
+        }
+        
+        #error {
+            color: #ffea00;
+            margin-top: 0.5rem;
+            height: 20px;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .quote {
+                font-size: 1.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    
+    <!-- Floating hearts -->
+    <div id="hearts-container"></div>
+    
+    <div class="container">
+        <div id="password-screen">
+            <h1>For My Special Someone</h1>
+            <p>Happy Birthday Rashi, please enter our secret code to continue...</p>
+            
+            <div class="password-container">
+                <input type="password" id="password" placeholder="Enter the secret code..." au
